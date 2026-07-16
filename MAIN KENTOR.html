@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>MediCare Pharmacy — Advanced Care Store</title>
+  <!-- Cropper.js CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: #F8FAFC;
+      color: #1E293B;
+      line-height: 1.5;
+    }
+
+    :root {
+      --primary: #0077B6;
+      --primary-dark: #023E8A;
+      --accent: #2D6A4F;
+      --accent-light: #52B788;
+      --bg-light: #F8FAFC;
+      --card: #ffffff;
+      --text-dark: #1E293B;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --danger: #DC2626;
+      --warning: #F59E0B;
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 20px 30px -10px rgba(0, 119, 182, 0.2);
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      background: white;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 12px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .logo-area {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-light));
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 22px;
+    }
+    /* fix for any image inside logo-icon */
+    .logo-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .logo-tagline {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      margin-left: 50px;
+      text-transform: uppercase;
+    }
+
+    .search {
+      flex: 1;
+      max-width: 420px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search input {
+      flex: 1;
+      border: none;
+      background: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      background: var(--bg-light);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--danger);
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      padding: 0 5px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-accent { background: var(--accent); color: white; }
+    .btn-accent:hover { background: #1B4332; }
+    .btn-outline { border: 1px solid var(--border); background: white; }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #b91c1c; }
+
+    .subnav {
+      background: var(--primary);
+      color: white;
+      overflow-x: auto;
+    }
+
+    .nav-inner {
+      display: flex;
+      gap: 4px;
+      padding: 8px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .nav-inner a {
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 14px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .nav-inner a:hover, .nav-inner a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Pages */
+    .page {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+    .page.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(115deg, #CAF0F8 0%, #90E0EF 100%);
+      padding: 70px 20px;
+      text-align: center;
+      border-radius: 0 0 40px 40px;
+      margin-bottom: 40px;
+    }
+    .hero h1 { font-size: 44px; color: var(--primary-dark); margin-bottom: 16px; }
+    .page-hero {
+      background: linear-gradient(135deg, var(--primary), var(--accent-light));
+      color: white;
+      padding: 48px 20px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .section-title { text-align: center; margin-bottom: 40px; }
+    .section-title small { color: var(--accent); letter-spacing: 2px; font-weight: 600; }
+    .section-title h2 { font-size: 32px; margin-top: 6px; color: var(--primary-dark); }
+
+    /* Category section under Explore Specialties */
+    .category-showcase {
+      margin: 30px 0 50px;
+    }
+    .category-showcase h3 {
+      font-size: 28px;
+      text-align: center;
+      color: var(--primary-dark);
+      margin-bottom: 24px;
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .cat-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .cat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+    .cat-icon { font-size: 48px; margin-bottom: 10px; }
+    .cat-card h4 { font-size: 18px; color: var(--primary-dark); margin-bottom: 6px; }
+    .cat-card p { font-size: 12px; color: var(--muted); }
+
+    /* Featured Products - BIG title */
+    .featured-title {
+      text-align: center;
+      margin: 50px 0 30px;
+    }
+    .featured-title h2 {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      position: relative;
+      display: inline-block;
+      padding-bottom: 12px;
+    }
+    .featured-title h2:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent-light));
+      border-radius: 3px;
+    }
+
+    /* Grid & Cards - FULL SIZE IMAGES COVER */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: 0.25s;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card-img {
+      height: 180px;
+      background: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    /* CRUCIAL: images now cover full card-img area */
+    .card-img img { 
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    /* fallback emoji / text icon style: centered */
+    .card-img span {
+      font-size: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: #EFF6FF;
+    }
+    /* Small specialty badge */
+    .specialty-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      font-size: 9px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      color: white;
+      z-index: 3;
+      letter-spacing: 0.3px;
+    }
+    .sold-out {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      font-size: 13px;
+      backdrop-filter: blur(3px);
+      z-index: 4;
+    }
+    .card-body { padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .card h3 { font-size: 15px; font-weight: 700; margin: 0; line-height: 1.3; }
+    .card-desc { font-size: 11px; color: var(--muted); flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .price { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .old-price { font-size: 11px; color: var(--muted); text-decoration: line-through; margin-left: 5px; }
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      gap: 6px;
+    }
+    .add-cart {
+      background: var(--primary);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 30px;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+    .buy-now {
+      background: var(--accent);
+      color: white;
+      flex: 1;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 8px 0;
+      transition: 0.2s;
+      text-align: center;
+    }
+    .add-cart:disabled, .buy-now:disabled { background: var(--muted); cursor: not-allowed; opacity: 0.6; }
+
+    /* Product Detail Modal */
+    .product-detail-modal .modal-box {
+      max-width: 950px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .detail-image {
+      background: #F8FAFC;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      padding: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+    .detail-image img { 
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      border-radius: 16px;
+    }
+    .detail-image span { font-size: 90px; }
+    .detail-info h2 { font-size: 24px; color: var(--primary-dark); margin-bottom: 6px; }
+    .detail-meta { color: var(--muted); font-size: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .detail-price { font-size: 26px; font-weight: 800; color: var(--primary); margin: 10px 0; }
+    .detail-old-price { font-size: 15px; text-decoration: line-through; color: var(--muted); margin-left: 8px; font-weight: normal; }
+    .detail-specs { background: var(--bg-light); padding: 14px; border-radius: 20px; margin: 12px 0; }
+    .spec-row { display: flex; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .spec-label { width: 130px; font-weight: 700; color: var(--primary-dark); }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+    .tag { background: #E6F7FF; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; color: var(--primary-dark); }
+    @media (max-width: 700px) { .detail-grid { grid-template-columns: 1fr; } }
+
+    /* Owner Profile */
+    .owner-profile { background: white; border-radius: 28px; box-shadow: var(--shadow-lg); padding: 30px; margin: 20px 0 40px; }
+    .owner-flex { display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; justify-content: center; }
+    .owner-photo-circle { width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent-light)); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+    .owner-photo-circle span { font-size: 56px; color: white; }
+    .owner-details { flex: 1; }
+    .owner-name { font-size: 28px; font-weight: 800; color: var(--primary-dark); margin-bottom: 4px; }
+    .owner-title { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+    .office-address { background: #F1F9FE; padding: 12px; border-radius: 18px; margin: 12px 0; border-left: 4px solid var(--primary); font-size: 13px; }
+    .skills-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .skill-tag { background: #E6F7FF; padding: 3px 10px; border-radius: 30px; font-size: 10px; font-weight: 600; color: var(--primary-dark); }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-top: 15px; }
+    .info-card { background: white; padding: 8px; border-radius: 14px; box-shadow: var(--shadow); display: flex; gap: 8px; align-items: center; font-size: 12px; }
+
+    /* Drawer + Modal */
+    .drawer { position: fixed; top: 0; right: -460px; width: 420px; max-width: 100%; height: 100vh; background: white; box-shadow: -8px 0 20px rgba(0,0,0,0.1); z-index: 999; transition: 0.3s; display: flex; flex-direction: column; }
+    .drawer.open { right: 0; }
+    .drawer-head, .drawer-foot { padding: 18px; border-bottom: 1px solid var(--border); }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); display: none; align-items: center; justify-content: center; z-index: 1100; padding: 20px; }
+    .modal.active { display: flex; }
+    .modal-box { background: white; border-radius: 28px; max-width: 800px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 24px; position: relative; }
+    .modal-close { position: absolute; top: 14px; right: 14px; background: var(--bg-light); width: 30px; height: 30px; border-radius: 50%; font-weight: bold; font-size: 16px; cursor: pointer; }
+    .form-grp { margin-bottom: 14px; }
+    .form-grp label { font-weight: 600; font-size: 12px; display: block; margin-bottom: 4px; }
+    .form-grp input, .form-grp select, .form-grp textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 12px; font-size: 13px; }
+
+    /* Admin */
+    .admin-tab-bar { display: flex; gap: 6px; border-bottom: 2px solid var(--border); margin-bottom: 20px; flex-wrap: wrap; }
+    .admin-tab-btn { padding: 8px 16px; font-weight: 700; font-size: 13px; color: var(--muted); border-bottom: 2px solid transparent; cursor: pointer; }
+    .admin-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; max-height: 45vh; overflow-y: auto; }
+    .admin-card { border: 1px solid var(--border); border-radius: 14px; padding: 10px; background: white; font-size: 13px; }
+    .order-card { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; font-size: 13px; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1E293B; color: white; padding: 8px 18px; border-radius: 40px; font-weight: 500; font-size: 12px; z-index: 1200; transition: 0.2s; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    footer { background: var(--primary-dark); color: #CAF0F8; padding: 30px 20px 15px; margin-top: 50px; text-align: center; font-size: 12px; }
+    @media (max-width: 700px) { .header-inner { flex-direction: column; align-items: stretch; } .search { max-width: 100%; } .drawer { width: 100%; right: -100%; } .grid { gap: 16px; } .featured-title h2 { font-size: 28px; } .card-img { height: 160px; } }
+    
+    /* pill for specialty filter */
+    .subcat-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; justify-content: center; }
+    .subcat-pill { background: #EFF6FF; border: none; padding: 6px 16px; border-radius: 40px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; color: #1E3A8A; }
+    .subcat-pill.active { background: var(--primary); color: white; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo-area" onclick="showPage('home')">
+      <div class="logo"><div class="logo-icon"><img src="IMG-20260430-WA0001.jpg" alt=""></div><span>5A Health Services </span></div>
+      <div class="logo-tagline">Care that cures</div>
+    </div>
+    <div class="search"><span>🔍</span><input type="text" id="searchInput" placeholder="Search medicines..."></div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openCart()">🛒 <span class="cart-count" id="cartCount">0</span></button>
+      <button class="btn btn-primary" onclick="showPage('login')">🔐 Admin</button>
+    </div>
+  </div>
+  <div class="subnav"><div class="nav-inner">
+    <a onclick="showPage('home')">🏠 Home</a><a onclick="showPage('medicines')">💊 Specialties</a>
+    <a onclick="showPage('injections')">💉 Injections</a><a onclick="showPage('skincare')">🧴 Skin Care</a>
+    <a onclick="showPage('about')">About</a><a onclick="showPage('contact')">Contact</a>
+  </div></div>
+</header>
+
+<!-- HOME PAGE -->
+<div class="page" id="page-home">
+  <div class="hero">
+    <h1>Your Health, Delivered with Care</h1>
+    <p>Oncology · Hematology · Nephrology · Immunology · Critical Care</p>
+    <button class="btn btn-primary" onclick="showPage('medicines')">Explore Specialties →</button>
+  </div>
+  <div class="container">
+    <div class="category-showcase">
+      <h3>📋 Shop by Category</h3>
+      <div class="cat-grid">
+        <div class="cat-card" onclick="showPage('medicines')"><div class="cat-icon">💊</div><h4>Medicines</h4><p>Tablets, capsules, specialty drugs</p></div>
+        <div class="cat-card" onclick="showPage('injections')"><div class="cat-icon">💉</div><h4>Injections</h4><p>Vaccines, biologics, IV therapies</p></div>
+        <div class="cat-card" onclick="showPage('skincare')"><div class="cat-icon">🧴</div><h4>Skin Care</h4><p>Dermatology, creams, lotions</p></div>
+      </div>
+    </div>
+    <div class="featured-title"><h2>⭐ FEATURED PRODUCTS ⭐</h2></div>
+    <div class="grid" id="featuredGrid"></div>
+  </div>
+</div>
+
+<div class="page" id="page-medicines">
+  <div class="page-hero"><h1>💊 Specialty Medicines</h1></div>
+  <div class="container">
+    <div class="subcat-tabs" id="specialtyTabs"></div>
+    <div class="grid" id="medSpecialtyGrid"></div>
+  </div>
+</div>
+<div class="page" id="page-injections">
+  <div class="page-hero"><h1>💉 Injections & Biologics</h1></div>
+  <div class="container"><div class="grid" id="injGrid"></div></div>
+</div>
+<div class="page" id="page-skincare">
+  <div class="page-hero"><h1>🧴 Skincare & Derma</h1></div>
+  <div class="container"><div class="grid" id="skinGrid"></div></div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="page-hero"><h1>About MediCare+</h1><p>Leadership · Trust · Excellence in Healthcare</p></div>
+  <div class="container">
+    <div class="owner-profile">
+      <div class="owner-flex">
+        <div class="owner-photo-circle"><span><img src="IMG-20260517.jpg" alt="IMG-20260517" width="300"></span></div>
+        <div class="owner-details">
+          <div class="owner-name">Aamer Niazi</div>
+          <div class="owner-title">Founder — 5A Health Services </div>
+          <div>🏢 Ten Wasin ICI · 21+ years in Pharmaceutical Industry</div>
+          <div class="office-address"><strong>📍 Office Address:</strong><p>Dhoke Banaras Near Lane 16 Street No.3, Range Road,<br> near Masjid Maaz bin Jabil, Afshan Colony,<br> Rawalpindi, 46000, Pakistan</p></div>
+          <div class="info-grid"><div class="info-card"><span>🏢</span><div><strong>5A Health Services</strong><br>Business Development Manager (2020–Present)</div></div>
+          <div class="info-card"><span>📈</span><div><strong>ICI Pakistan Ltd.</strong><br>Regional Sales Manager (2017–Present)</div></div>
+          <div class="info-card"><span>🎓</span><div><strong>ARID Agriculture University</strong><br>Master's in Zoology (2000–2002)</div></div></div>
+          <div class="skills-row"><span class="skill-tag">Pharmaceutical Distribution</span><span class="skill-tag">Vaccines & Biologics</span><span class="skill-tag">Nutraceuticals</span><span class="skill-tag">Surgical Products</span><span class="skill-tag">Management & Strategy</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-contact"><div class="container" style="padding:50px 0"><h2>Contact Us</h2><p>📞 WhatsApp: +92 333 9832779</p><p>📍 Dhoke Banaras, Near Lane 16, Afshan Colony, Rawalpindi</p><button class="btn btn-accent" onclick="window.open('https://wa.me/923339832779')">Chat on WhatsApp</button></div></div>
+<div class="page" id="page-login"><div class="container"><div style="max-width:400px;margin:50px auto;background:white;border-radius:28px;padding:32px;text-align:center"><div style="font-size:48px">🔐</div><h2>Admin Access</h2><input type="password" id="loginCodeInput" placeholder="Secret code" onkeydown="if(event.key==='Enter') doLogin()" style="width:100%;padding:10px;margin:12px 0;border-radius:30px;border:1px solid #ddd"><button class="btn btn-primary" style="width:100%" onclick="doLogin()">Unlock Dashboard</button></div></div></div>
+
+<footer>© 2026 MediCare+ — Led by Aamer Niazi (5A Health Services & ICI Pakistan) | Rawalpindi, Pakistan</footer>
+
+<!-- Cart & Modals -->
+<div class="drawer" id="cartDrawer"><div class="drawer-head"><h3>Your Cart</h3><button onclick="closeCart()">✕</button></div><div class="drawer-body" id="cartBody"></div><div class="drawer-foot"><div id="cartTotal" style="font-weight:800">Rs. 0</div><button class="btn btn-accent" style="width:100%;margin-top:10px" onclick="openCheckoutModal()">Order Now</button></div></div>
+<div class="modal" id="checkoutModal"><div class="modal-box"><button class="modal-close" onclick="closeModal('checkoutModal')">✕</button><h3>Complete Order</h3><div class="form-grp"><label>Full Name *</label><input id="custName" placeholder="Your name"></div><div class="form-grp"><label>Delivery Address *</label><textarea id="custAddress" rows="2" placeholder="House, street, city"></textarea></div><div class="form-grp"><label>Phone (optional)</label><input id="custPhone" placeholder="03xx-xxxxxxx"></div><button class="btn btn-primary" onclick="finalizeOrder()">Send via WhatsApp</button></div></div>
+<div class="modal product-detail-modal" id="productDetailModal"><div class="modal-box" style="max-width:900px"><button class="modal-close" onclick="closeModal('productDetailModal')">✕</button><div id="productDetailContent"></div></div></div>
+<div class="modal" id="adminModal"><div class="modal-box" style="max-width:900px"><button class="modal-close" onclick="closeModal('adminModal')">✕</button><h2>Admin Dashboard</h2><div class="admin-tab-bar"><button class="admin-tab-btn active" data-tab="products" onclick="switchAdminTab('products')">Products</button><button class="admin-tab-btn" data-tab="add" onclick="switchAdminTab('add')">Add Product</button><button class="admin-tab-btn" data-tab="orders" onclick="switchAdminTab('orders')">Orders</button></div><div id="adminProductsPanel"></div><div id="adminAddPanel" style="display:none"><div class="form-grp"><label>Product Name</label><input id="newProductName"></div><div class="form-grp"><label>Category</label><select id="newProductCat"><option>Medicines</option><option>Injections</option><option>Skin Care</option></select></div><div class="form-grp"><label>Specialty</label><select id="newProductSpecialty"><option value="">None</option><option>Oncology</option><option>Hematology</option><option>Nephrology</option><option>Immunology</option><option>Critical Care</option></select></div><div class="form-grp"><label>Price (Rs.)</label><input type="number" id="newProductPrice"></div><div class="form-grp"><label>Old Price (optional)</label><input type="number" id="newProductOldPrice"></div><div class="form-grp"><label>Generic Name</label><input id="newGeneric" placeholder="e.g., Meropenem"></div><div class="form-grp"><label>Manufacturer</label><input id="newManufacturer" placeholder="Penro"></div><div class="form-grp"><label>Dosage Form</label><input id="newDosage" placeholder="Injection 1g"></div><div class="form-grp"><label>Tags (comma)</label><input id="newTags" placeholder="Antibiotic, Carbapenem"></div><div class="form-grp"><label>Product Image (Upload & Crop)</label><input type="file" id="productImageInput" accept="image/*"><canvas id="imageCropperCanvas" style="max-width:100%; display:none; margin-top:8px; border-radius:12px;"></canvas><button id="cropBtn" style="display:none; margin-top:6px;" class="btn btn-outline">✂️ Crop Image</button></div><button class="btn btn-primary" onclick="addProductWithImage()">➕ Add Product</button></div><div id="adminOrdersPanel" style="display:none"></div></div></div>
+<div class="toast" id="toastMsg"></div>
+
+<script>
+  (function() {
+    // ====================== PRODUCT DATA ======================
+    let products = JSON.parse(localStorage.getItem('mc_products')) || [
+      { id:1, name:"Methotrexate Injection", category:"Injections", specialty:"Oncology", price:1250, oldPrice:1450, desc:"Antimetabolite for cancer therapy", emoji:"💉", img:"", generic:"Methotrexate Sodium", manufacturer:"Pfizer", dosage:"Injection 50mg/mL", tags:["Chemotherapy","Antineoplastic","Rx"], soldOut:false },
+      { id:2, name:"Imatinib Tablets", category:"Medicines", specialty:"Oncology", price:4500, oldPrice:5200, desc:"Targeted therapy for CML", emoji:"💊", img:"", generic:"Imatinib Mesylate", manufacturer:"Novartis", dosage:"400mg Tablets", tags:["Tyrosine Kinase Inhibitor","CML","Rx"], soldOut:false },
+      { id:3, name:"Meropenem 1g", category:"Injections", specialty:"Critical Care", price:2849, oldPrice:3352, desc:"Broad spectrum carbapenem antibiotic", emoji:"💉", img:"", generic:"Meropenem", manufacturer:"Penro", dosage:"Injection 1g Vial", tags:["Carbapenem","Antibiotic","Critical Care","Rx"], soldOut:false },
+      { id:4, name:"Erythropoietin", category:"Injections", specialty:"Hematology", price:3200, oldPrice:3800, desc:"Stimulates RBC production", emoji:"💉", img:"", generic:"Epoetin Alfa", manufacturer:"Roche", dosage:"Injection 4000IU", tags:["Anemia","Hematology","Biologic"], soldOut:false }
+    ];
+    let cart = JSON.parse(localStorage.getItem('mc_cart')) || [];
+    let orders = JSON.parse(localStorage.getItem('mc_orders')) || [];
+    let currentSpecialty = "All", searchTerm = "", currentPage = "home";
+    let cropper = null;
+    const SPECIALTIES = ["All","Oncology","Hematology","Nephrology","Immunology","Critical Care"];
+    
+    function saveAll() { localStorage.setItem('mc_products', JSON.stringify(products)); localStorage.setItem('mc_cart', JSON.stringify(cart)); localStorage.setItem('mc_orders', JSON.stringify(orders)); }
+    function escapeHtml(str) { return String(str||'').replace(/[&<>]/g, m=>m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    
+    // CARD with full image cover: images fill .card-img area
+    function productCardHTML(p) { 
+      let imgHtml = p.img ? `<img src="${p.img}" alt="${p.name}">` : `<span>${p.emoji||'💊'}</span>`;
+      return `<div class="card" onclick="openProductDetail(${p.id})"><div class="card-img">${imgHtml}${p.specialty?`<div class="specialty-badge">🧬 ${p.specialty}</div>`:''}${p.soldOut?'<div class="sold-out">SOLD OUT</div>':''}</div><div class="card-body"><h3>${escapeHtml(p.name)}</h3><p class="card-desc">${escapeHtml(p.desc||'')}</p><div><span class="price">₨ ${p.price.toLocaleString()}</span>${p.oldPrice?`<span class="old-price">₨ ${p.oldPrice.toLocaleString()}</span>`:''}</div><div class="card-actions" onclick="event.stopPropagation()"><button class="add-cart" ${p.soldOut?'disabled':''} onclick="addToCart(${p.id})">🛒</button><button class="buy-now" ${p.soldOut?'disabled':''} onclick="buyNow(${p.id})">BUY NOW</button></div></div></div>`; 
+    }
+    
+    window.openProductDetail = function(id) { 
+      let p = products.find(x=>x.id===id); if(!p) return; 
+      let tagsHtml = (p.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join(''); 
+      let genericHtml = p.generic ? `<div class="spec-row"><span class="spec-label">Generic Name:</span><span>${escapeHtml(p.generic)}</span></div>` : ''; 
+      let manufacturerHtml = p.manufacturer ? `<div class="spec-row"><span class="spec-label">Manufacturer:</span><span>${escapeHtml(p.manufacturer)}</span></div>` : ''; 
+      let dosageHtml = p.dosage ? `<div class="spec-row"><span class="spec-label">Dosage Form:</span><span>${escapeHtml(p.dosage)}</span></div>` : ''; 
+      document.getElementById('productDetailContent').innerHTML = `<div class="detail-grid"><div class="detail-image">${p.img?`<img src="${p.img}" alt="${p.name}">`:`<span>${p.emoji||'💊'}</span>`}</div><div class="detail-info"><h2>${escapeHtml(p.name)}</h2><div class="detail-meta">${p.category} ${p.specialty?`· ${p.specialty}`:''} · Prescription Required (Rx)</div><div class="detail-price">₨ ${p.price.toLocaleString()}${p.oldPrice?`<span class="detail-old-price">₨ ${p.oldPrice.toLocaleString()}</span>`:''}</div><div class="detail-specs">${genericHtml}${manufacturerHtml}${dosageHtml}<div class="spec-row"><span class="spec-label">Therapeutic Class:</span><span>${p.specialty||'General'}</span></div></div><div class="tags">${tagsHtml}</div><div style="margin-top:16px; display:flex; gap:12px"><button class="btn btn-primary" onclick="addToCart(${p.id}); closeModal('productDetailModal');">🛒 Add to Cart</button><button class="btn btn-accent" onclick="buyNow(${p.id}); closeModal('productDetailModal');">BUY NOW</button></div></div></div>`; 
+      document.getElementById('productDetailModal').classList.add('active'); 
+    };
+    
+    function renderAll() {
+      let featured = document.getElementById('featuredGrid'); if(featured) featured.innerHTML = products.slice(0,6).map(productCardHTML).join('');
+      let inj = document.getElementById('injGrid'); if(inj) inj.innerHTML = products.filter(p=>p.category==='Injections').map(productCardHTML).join('');
+      let skin = document.getElementById('skinGrid'); if(skin) skin.innerHTML = products.filter(p=>p.category==='Skin Care').map(productCardHTML).join('');
+      let filtered = products.filter(p=>p.category==='Medicines'||p.category==='Injections');
+      if(currentSpecialty !== "All") filtered = filtered.filter(p=>p.specialty===currentSpecialty);
+      if(searchTerm) filtered = filtered.filter(p=>p.name.toLowerCase().includes(searchTerm) || (p.generic && p.generic.toLowerCase().includes(searchTerm)));
+      let medGrid = document.getElementById('medSpecialtyGrid'); if(medGrid) medGrid.innerHTML = filtered.length?filtered.map(productCardHTML).join('') : '<div style="grid-column:1/-1; text-align:center; padding:30px;">No products found</div>';
+      updateCartUI();
+    }
+    function buildSpecialtyTabs() { let t = document.getElementById('specialtyTabs'); if(t) t.innerHTML = SPECIALTIES.map(s=>`<button class="subcat-pill ${currentSpecialty===s?'active':''}" onclick="setSpecialty('${s}')">${s==='All'?'📋 All Specialties':`🧪 ${s}`}</button>`).join(''); }
+    window.setSpecialty = (s) => { currentSpecialty = s; buildSpecialtyTabs(); renderAll(); };
+    window.addToCart = (id) => { let p = products.find(x=>x.id===id); if(!p||p.soldOut) return; let ex = cart.find(c=>c.id===id); ex ? ex.qty++ : cart.push({id, name:p.name, price:p.price, qty:1}); saveAll(); updateCartUI(); toast(`✓ ${p.name} added`); };
+    window.buyNow = (id) => { let p = products.find(x=>x.id===id); if(!p||p.soldOut) return; cart = [{id:p.id, name:p.name, price:p.price, qty:1}]; saveAll(); updateCartUI(); toast(`Buy Now: ${p.name}`); openCheckoutModal(); };
+    function updateCartUI() { let count = cart.reduce((s,c)=>s+c.qty,0); document.getElementById('cartCount').innerText = count; let body = document.getElementById('cartBody'); if(!cart.length) { body.innerHTML = '<div style="text-align:center;padding:30px;color:gray">Cart is empty</div>'; document.getElementById('cartTotal').innerHTML = "Total: ₨ 0"; return; } body.innerHTML = cart.map(c=>{ let prod = products.find(p=>p.id===c.id); return `<div style="display:flex; gap:10px; margin-bottom:14px; border-bottom:1px solid #eee; padding-bottom:10px"><div style="width:50px;height:50px;background:#f1f5f9;border-radius:10px;display:grid;place-items:center;overflow:hidden">${prod?.img?`<img src="${prod.img}" style="width:100%;height:100%;object-fit:cover">`:`<span style="font-size:24px">${prod?.emoji||'💊'}</span>`}</div><div style="flex:1"><strong style="font-size:14px">${c.name}</strong><div style="font-size:12px">₨ ${c.price} x ${c.qty} = ₨ ${c.price*c.qty}</div><div style="margin-top:5px"><button onclick="changeQty(${c.id},-1)" style="background:#e2e8f0;width:26px;height:26px;border-radius:50%;font-size:12px">-</button> <span style="margin:0 6px">${c.qty}</span> <button onclick="changeQty(${c.id},1)" style="background:#e2e8f0;width:26px;height:26px;border-radius:50%;font-size:12px">+</button> <button onclick="removeFromCart(${c.id})" style="color:red;margin-left:10px;font-size:12px">Remove</button></div></div></div>`; }).join(''); let total = cart.reduce((s,c)=>s+c.price*c.qty,0); document.getElementById('cartTotal').innerHTML = `Total: ₨ ${total.toLocaleString()}`; }
+    window.changeQty = (id, d) => { let item = cart.find(c=>c.id===id); if(item){ item.qty+=d; if(item.qty<=0) cart = cart.filter(c=>c.id!==id); saveAll(); updateCartUI(); } };
+    window.removeFromCart = (id) => { cart = cart.filter(c=>c.id!==id); saveAll(); updateCartUI(); };
+    window.openCheckoutModal = function() { if(!cart.length){toast("Cart empty");return;} document.getElementById('checkoutModal').classList.add('active'); };
+    window.finalizeOrder = () => { let name = document.getElementById('custName').value.trim(), addr = document.getElementById('custAddress').value.trim(), phone = document.getElementById('custPhone').value.trim(); if(!name||!addr){toast("Please fill name & address");return;} let total = cart.reduce((s,c)=>s+c.price*c.qty,0); let items = cart.map(c=>`${c.name} x${c.qty} = ₨ ${c.price*c.qty}`).join('\n'); let msg = `🩺 NEW ORDER - MediCare+\nCustomer: ${name}\nPhone: ${phone||'-'}\nAddress: ${addr}\n\n📦 Items:\n${items}\n\n💰 Total: ₨ ${total}`; orders.unshift({id:Date.now(),name,phone,address:addr,items:[...cart],total,date:new Date().toLocaleString()}); cart=[]; saveAll(); updateCartUI(); closeModal('checkoutModal'); window.open(`https://wa.me/923339832779?text=${encodeURIComponent(msg)}`); toast("Order sent! ✅"); };
+    window.openCart = () => document.getElementById('cartDrawer').classList.add('open');
+    window.closeCart = () => document.getElementById('cartDrawer').classList.remove('open');
+    window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); if(cropper){ cropper.destroy(); cropper=null; } };
+    function toast(msg) { let t = document.getElementById('toastMsg'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+    window.showPage = function(page) { currentPage=page; document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(`page-${page}`).classList.add('active'); if(page==='medicines') { buildSpecialtyTabs(); renderAll(); } else renderAll(); window.scrollTo(0,0); };
+    
+    // Cropper logic
+    document.getElementById('productImageInput')?.addEventListener('change', function(e) { let file = e.target.files[0]; if(!file) return; let reader = new FileReader(); reader.onload = function(ev) { let canvas = document.getElementById('imageCropperCanvas'); canvas.style.display = 'block'; canvas.width = 350; canvas.height = 350; let img = new Image(); img.src = ev.target.result; img.onload = function() { canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height); if(cropper) cropper.destroy(); cropper = new Cropper(canvas, { aspectRatio: 1, viewMode: 1, autoCropArea: 0.8 }); document.getElementById('cropBtn').style.display = 'block'; }; }; reader.readAsDataURL(file); });
+    document.getElementById('cropBtn')?.addEventListener('click', function() { if(cropper) { let croppedCanvas = cropper.getCroppedCanvas(); let croppedImageData = croppedCanvas.toDataURL('image/jpeg', 0.9); window.croppedImageData = croppedImageData; toast("Image cropped & ready!"); cropper.destroy(); cropper=null; document.getElementById('imageCropperCanvas').style.display='none'; document.getElementById('cropBtn').style.display='none'; } });
+    window.addProductWithImage = function() { let name = document.getElementById('newProductName').value.trim(); if(!name){toast("Product name required");return;} let cat = document.getElementById('newProductCat').value; let spec = document.getElementById('newProductSpecialty').value || null; let price = parseInt(document.getElementById('newProductPrice').value); let oldPrice = parseInt(document.getElementById('newProductOldPrice').value) || 0; let generic = document.getElementById('newGeneric').value; let manufacturer = document.getElementById('newManufacturer').value; let dosage = document.getElementById('newDosage').value; let tagsStr = document.getElementById('newTags').value; let tags = tagsStr ? tagsStr.split(',').map(t=>t.trim()) : []; let imgData = window.croppedImageData || ''; let emoji = cat==='Injections'?'💉':cat==='Skin Care'?'🧴':'💊'; let newId = Date.now(); products.push({ id:newId, name, category:cat, specialty:spec, price, oldPrice, desc:name+" - advanced formulation", emoji, img:imgData, generic, manufacturer, dosage, tags, soldOut:false }); saveAll(); renderAll(); renderAdminProducts(); document.getElementById('newProductName').value=''; document.getElementById('newProductPrice').value=''; document.getElementById('newGeneric').value=''; document.getElementById('newManufacturer').value=''; document.getElementById('newDosage').value=''; document.getElementById('newTags').value=''; window.croppedImageData=''; toast("Product added successfully!"); switchAdminTab('products'); };
+    function renderAdminProducts() { let panel = document.getElementById('adminProductsPanel'); if(!panel) return; panel.innerHTML = `<div class="admin-grid">${products.map(p=>`<div class="admin-card"><div><strong>${p.name}</strong><div style="font-size:11px;color:gray">${p.category} ${p.specialty||''}</div></div><div>₨ <input type="number" value="${p.price}" onchange="updatePrice(${p.id},this.value)" style="width:80px;padding:4px;border-radius:6px;border:1px solid #ccc;font-size:12px"></div><div style="display:flex; gap:6px; margin-top:8px"><button class="btn btn-outline" style="padding:4px 10px;font-size:11px" onclick="toggleSold(${p.id})">${p.soldOut?'Restock':'Sold Out'}</button><button class="btn btn-danger" style="padding:4px 10px;font-size:11px" onclick="deleteProduct(${p.id})">Delete</button></div></div>`).join('')}</div>`; }
+    window.updatePrice = (id, val) => { let p = products.find(x=>x.id===id); if(p){ p.price = parseInt(val)||0; saveAll(); renderAll(); renderAdminProducts(); toast("Price updated"); } };
+    window.toggleSold = (id) => { let p=products.find(x=>x.id===id); if(p){ p.soldOut=!p.soldOut; saveAll(); renderAll(); renderAdminProducts(); toast(p.soldOut?"Marked sold out":"Back in stock"); } };
+    window.deleteProduct = (id) => { if(confirm("Delete this product?")){ products=products.filter(p=>p.id!==id); saveAll(); renderAll(); renderAdminProducts(); toast("Product deleted"); } };
+    function renderAdminOrders() { let panel = document.getElementById('adminOrdersPanel'); if(!orders.length){ panel.innerHTML='<p style="text-align:center;color:gray;padding:20px">No orders yet</p>'; return; } panel.innerHTML = orders.map(o=>`<div class="order-card"><div style="display:flex;justify-content:space-between"><strong>${o.name}</strong><span>₨ ${o.total}</span></div><div>📍 ${o.address}</div><div>📦 ${o.items.map(i=>i.name).join(', ')}</div><div style="font-size:11px;color:gray;margin-top:6px">${o.date}</div></div>`).join(''); }
+    window.switchAdminTab = function(tab) { document.querySelectorAll('.admin-tab-btn').forEach(btn=>btn.classList.remove('active')); document.querySelector(`.admin-tab-btn[data-tab="${tab}"]`).classList.add('active'); document.getElementById('adminProductsPanel').style.display = tab==='products'?'block':'none'; document.getElementById('adminAddPanel').style.display = tab==='add'?'block':'none'; document.getElementById('adminOrdersPanel').style.display = tab==='orders'?'block':'none'; if(tab==='orders') renderAdminOrders(); };
+    window.doLogin = function() { if(document.getElementById('loginCodeInput').value.trim() === "1977") { document.getElementById('adminModal').classList.add('active'); renderAdminProducts(); renderAdminOrders(); switchAdminTab('products'); toast("Admin Access Granted"); } else toast("Invalid access code"); };
+    
+    document.getElementById('searchInput')?.addEventListener('input', (e)=>{ searchTerm = e.target.value.toLowerCase(); if(currentPage==='medicines') renderAll(); else renderAll(); });
+    showPage('home'); updateCartUI();
+    document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',(e)=>{ if(e.target===m) m.classList.remove('active'); if(cropper){ cropper.destroy(); cropper=null; } }));
+  })();
+</script>
+</body>
+</html>
